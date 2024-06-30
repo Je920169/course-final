@@ -204,7 +204,15 @@ public class ChooseRecordsDaoImpl implements ChooseRecordsDao {
 		 String sql = "SELECT * FROM choose_records WHERE teacherid = ?";
 	        return jdbcTemplate.query(sql, new Object[]{teacherId}, new BeanPropertyRowMapper<>(ChooseRecords.class));
 	    }
-	}
+
+
+	@Override
+	public String getCourseNameById(Integer id) {
+		String sql = "SELECT subject FROM courses WHERE id = ?";
+        return jdbcTemplate.queryForObject(sql, String.class, id);
+    }
+	
+}
 	    		
 	
 

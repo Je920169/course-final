@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <title>學生選課系統</title>
 </head>
 <body>
@@ -25,7 +27,7 @@
         <a href="${pageContext.request.contextPath}/index/courselist"  class="active">課程列表</a>
         <a href="${pageContext.request.contextPath}/auth/chooseRecords"  class="active">已選課程</a>
         <a href="${pageContext.request.contextPath}/auth/curriculum" class="active">課表</a>
-        <a href="${pageContext.request.contextPath}/auth/logout" class="active">登出</a>
+        <a href="${pageContext.request.contextPath}/auth/logout" class="active logout-link">登出</a>
     </nav>
 	
 	<div class="welcome my-3 text-center">
@@ -103,7 +105,7 @@
                 	<c:if test="${userType == 'teacher'}">
                 	   	<form action="${pageContext.request.contextPath}/index/courselist/delete/${course.id}" method="POST" style="display:inline;">
                             <input type="hidden" name="_method" value="delete"/>
-                            <button type="submit" class="btn btn-outline-danger">刪除課程</button>
+                            <button type="button" class="btn btn-outline-danger delete-button">刪除課程</button>
                         </form>
                     </c:if>   
                     
@@ -113,7 +115,7 @@
                             <input type="hidden" name="courseid" value="${course.id}">
                             <input type="hidden" name="credits" value="${course.credits}">
                             <input type="hidden" name="action" value="Enroll">
-                            <button type="submit" class="btn btn-outline-primary">加選</button>
+                           <button type="button" class="btn btn-outline-primary enroll-button">加選</button>
                         </form>
                      </c:if>     
                     </td>
@@ -122,23 +124,79 @@
             </c:forEach>
         </tbody>
     </table>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   
 <script>
-    $(document).ready(function() {
-        $("td[id^='teacher-name-']").each(function() {
-            var teacherId = $(this).text();
-            var tdElement = $(this);
-            $.ajax({
-                url: '${pageContext.request.contextPath}/api/teacher/' + teacherId,
-                method: 'GET',
-                success: function(response) {
-                    tdElement.text(response);
-                },
-                error: function() {
-                    tdElement.text('N/A');
-                }
-            });
+$(document).ready(function() {
+    $("td[id^='teacher-name-']").each(function() {
+        var teacherId = $(this).text();
+        var tdElement = $(this);
+        $.ajax({
+            url: '${pageContext.request.contextPath}/api/teacher/' + teacherId,
+            method: 'GET',
+            success: function(response) {
+                tdElement.text(response);
+            },
+            error: function() {
+                tdElement.text('N/A');
+            }
         });
     });
+
+    $(".delete-button").click(function(e) {
+        e.preventDefault();
+        var form = $(this).closest("form");
+        Swal.fire({
+            title: '你確定要刪除這門課程嗎?',
+            text: "此操作不能撤銷!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '是的, 刪除!',
+            cancelButtonText: '取消'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    });
+
+    $(".enroll-button").click(function(e) {
+        e.preventDefault();
+        var form = $(this).closest("form");
+        Swal.fire({
+            title: '你確定要加選這門課程嗎?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '是的, 加選!',
+            cancelButtonText: '取消'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    });
+
+    $(".logout-link").click(function(e) {
+        e.preventDefault();
+        var href = $(this).attr('href');
+        Swal.fire({
+            title: '你確定要登出嗎?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '是的, 登出!',
+            cancelButtonText: '取消'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = href;
+            }
+        });
+    });
+});
 </script>
-    
+</body>
+</html>    

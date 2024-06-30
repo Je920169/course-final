@@ -10,6 +10,7 @@ public interface ChooseRecordsDao extends CoursesDao {
     int addChooseRecord(ChooseRecords chooseRecord);
     int updateChooseRecord(Integer id, ChooseRecords chooseRecord);
     int deleteChooseRecord(Integer id);
+    String getCourseNameById(Integer id);
     ChooseRecords getChooseRecordById(Integer id);
     List<ChooseRecords> getChooseRecordByStudentId(Integer studentId);
     List<ChooseRecords> getChooseRecordByTeacherId(Integer teacherId);

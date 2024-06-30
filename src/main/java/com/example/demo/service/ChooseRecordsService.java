@@ -88,4 +88,8 @@ public class ChooseRecordsService {
 	public List<ChooseRecords> getChooseRecordByTeacherId(Integer teacherId) {
 	    return chooseRecordsDao.getChooseRecordByTeacherId(teacherId);
 	}
+	
+	public String getCourseNameById(Integer id) {
+		return chooseRecordsDao.getCourseNameById(id);
+	}
 }
