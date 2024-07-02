@@ -11,7 +11,6 @@ CREATE TABLE IF NOT EXISTS students (
     name VARCHAR(45),
     email VARCHAR(60),
     password VARCHAR(200),
-    salt VARCHAR(200),
 	grade VARCHAR(45),
     major VARCHAR(45)
 );
@@ -20,8 +19,7 @@ CREATE TABLE IF NOT EXISTS teachers (
     id INT PRIMARY KEY,
     name VARCHAR(45),
 	email VARCHAR(60),
-    password VARCHAR(200),
-    salt VARCHAR(200)
+    password VARCHAR(200)
 );
 
 CREATE TABLE IF NOT EXISTS courses (
